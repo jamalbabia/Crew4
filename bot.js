@@ -3,7 +3,7 @@ const client = new Discord.Client();
  
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-   client.user.setActivity(" ! Plzzz ",{type: 'WATCHING'})
+   client.user.setActivity(" bhelp | احب البطاطس",{type: 'WATCHING'})
   console.log('')
   console.log('')
   console.log('╔[═════════════════════════════════════════════════════════════════]╗')
@@ -278,7 +278,7 @@ ${prefix}queue ⇏ لمعرفة قآئمة التشغيل
  client.on('message', message => {
     if(!message.channel.guild) return;
 let args = message.content.split(' ').slice(1).join(' ');
-if (message.content.startsWith('Plz')){
+if (message.content.startsWith('bc')){
 if (message.author.id !== '474354424391663616') return message.reply('** هذا الأمر فقط لصاحب البوت و شكراًً **')
 message.channel.sendMessage('جار ارسال الرسالة |✅')
 client.users.forEach(m =>{
