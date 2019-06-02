@@ -51,7 +51,7 @@ client.on('message', async msg => {
     let command = msg.content.toLowerCase().split(" ")[0];
     command = command.slice(prefix.length)
  
-    if (command === `تشغيل`) {
+     if (command === `play`) {
         const voiceChannel = msg.member.voiceChannel;
         if (!voiceChannel) return msg.channel.send('يجب توآجد حضرتك بروم صوتي .');
         const permissions = voiceChannel.permissionsFor(msg.client.user);
@@ -88,7 +88,7 @@ client.on('message', async msg => {
                     .setDescription(`**الرجآء من حضرتك إختيآر رقم المقطع** :
 ${videos.map(video2 => `[**${++index} **] \`${video2.title}\``).join('\n')}`)
  
-                    .setFooter("By iiFireKingYTii_#7310")
+                    .setFooter("By عمك بطاطا")
                     msg.channel.sendEmbed(embed1).then(message =>{message.delete(20000)})
                    
                     // eslint-disable-next-line max-depth
@@ -112,30 +112,30 @@ ${videos.map(video2 => `[**${++index} **] \`${video2.title}\``).join('\n')}`)
  
             return handleVideo(video, msg, voiceChannel);
         }
-    } else if (command === `تخطي`) {
+    } else if (command === `skip`) {
         if (!msg.member.voiceChannel) return msg.channel.send('أنت لست بروم صوتي .');
         if (!serverQueue) return msg.channel.send('لا يتوفر مقطع لتجآوزه');
         serverQueue.connection.dispatcher.end('تم تجآوز هذآ المقطع');
         return undefined;
-    } else if (command === `اخراج`) {
+    } else if (command === `leave`) {
         if (!msg.member.voiceChannel) return msg.channel.send('أنت لست بروم صوتي .');
         if (!serverQueue) return msg.channel.send('لا يتوفر مقطع لإيقآفه');
         serverQueue.songs = [];
         serverQueue.connection.dispatcher.end('تم إيقآف هذآ المقطع');
         return undefined;
-    } else if (command === `صوت`) {
+    } else if (command === `vol`) {
         if (!msg.member.voiceChannel) return msg.channel.send('أنت لست بروم صوتي .');
         if (!serverQueue) return msg.channel.send('لا يوجد شيء شغآل.');
         if (!args[1]) return msg.channel.send(`:loud_sound: مستوى الصوت **${serverQueue.volume}**`);
         serverQueue.volume = args[1];
         serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 50);
         return msg.channel.send(`:speaker: تم تغير الصوت الي **${args[1]}**`);
-    } else if (command === `اغنية`) {
+    } else if (command === `np`) {
         if (!serverQueue) return msg.channel.send('لا يوجد شيء حالي ف العمل.');
         const embedNP = new Discord.RichEmbed()
     .setDescription(`:notes: الان يتم تشغيل : **${serverQueue.songs[0].title}**`)
         return msg.channel.sendEmbed(embedNP);
-    } else if (command === `القائمة`) {
+    } else if (command === `queue`) {
        
         if (!serverQueue) return msg.channel.send('لا يوجد شيء حالي ف العمل.');
         let index = 0;
@@ -146,14 +146,14 @@ ${videos.map(video2 => `[**${++index} **] \`${video2.title}\``).join('\n')}`)
 ${serverQueue.songs.map(song => `**${++index} -** ${song.title}`).join('\n')}
 **الان يتم تشغيل** ${serverQueue.songs[0].title}`)
         return msg.channel.sendEmbed(embedqu);
-    } else if (command === `ايقاف`) {
+    } else if (command === `stop`) {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
             serverQueue.connection.dispatcher.pause();
             return msg.channel.send('تم إيقاف الموسيقى مؤقتا!');
         }
         return msg.channel.send('لا يوجد شيء حالي ف العمل.');
-    } else if (command === "اكمال") {
+    } else if (command === "resume") {
         if (serverQueue && !serverQueue.playing) {
             serverQueue.playing = true;
             serverQueue.connection.dispatcher.resume();
@@ -228,6 +228,7 @@ function play(guild, song) {
  
     serverQueue.textChannel.send(`بدء تشغيل : **${song.title}**`);
 }
+
  
 const adminprefix = "b";
 const devs = ['474354424391663616'];
@@ -259,15 +260,15 @@ client.on("message", message => {
   const embed = new Discord.RichEmbed()
       .setColor("#000000")
       .setDescription(`
-${prefix}تشغيل ⇏ لتشغيل أغنية برآبط أو بأسم
-${prefix}تخطي ⇏ لتجآوز الأغنية الحآلية
-${prefix}ايقاف ⇏ إيقآف الأغنية مؤقتا
-${prefix}اكمال ⇏ لموآصلة الإغنية بعد إيقآفهآ مؤقتا
-${prefix}صوت ⇏ لتغيير درجة الصوت 100 - 0
-${prefix}اخراج⇏ لإخرآج البوت من الروم
-${prefix}اغنية ⇏ لمعرفة الأغنية المشغلة حآليا
-${prefix}القائمة ⇏ لمعرفة قآئمة التشغيل
- `)
+${prefix}play ⇏ **لتشغيل أغنية برآبط أو بأسم**
+${prefix}skip ⇏ **لتجآوز الأغنية الحآلية**
+${prefix}stop ⇏ **قآف الأغنية مؤقتا**
+${prefix}resume ⇏ **وآصلة الإغنية بعد إيقآفهآ مؤقتا**
+${prefix}vol ⇏ **غيير درجة الصوت 100 - 0**
+${prefix}leave⇏ **رآج البوت من الروم**
+${prefix}np ⇏ **عرفة الأغنية المشغلة حآليا**
+${prefix}queue ⇏ **عرفة قآئمة التشغيل**
+  `)
    message.channel.sendEmbed(embed)
    
    }
