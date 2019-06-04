@@ -1,6 +1,0 @@
-owner=474354424391663616
-prefix=b
-game=play
- stayinchannel=true
-songinstatus=true
-TOKEN=NTgzNDAzNzQyNDczMjI0MTky.XO73Hw.VibQjHWel4NLVbvtxJeyEvh2rqs
