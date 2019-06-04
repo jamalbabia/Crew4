@@ -35,9 +35,6 @@ const YouTube = require('simple-youtube-api');
 const youtube = new YouTube("AIzaSyAdORXg7UZUo7sePv97JyoDqtQVi3Ll0b8");
 const queue = new Map();
 
- stayinchannel=true
-songinstatus=true
- 
 var prefix = "b" 
 client.on('message', async msg => {
     if (msg.author.bot) return undefined;
