@@ -3,5 +3,4 @@ prefix=b
 game=play
  stayinchannel=true
 songinstatus=true
-
- client.login(process.env.BOT_TOKEN);
+TOKEN=NTgzNDAzNzQyNDczMjI0MTky.XO73Hw.VibQjHWel4NLVbvtxJeyEvh2rqs
