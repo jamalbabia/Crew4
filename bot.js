@@ -249,7 +249,7 @@ client.user.setAvatar(argresult);
   message.channel.sendMessage(`**${argresult}** : تم تغير صورة البوت`);
       } else    
 if (message.content.startsWith(adminprefix + 'تويتش')) {
-  client.user.setGame(argresult, "https://www.twitch.tv/idk");
+  client.user.setGame(argresult, "https://www.twitch.tv/jamal_pro");
     message.channel.sendMessage(`**تم تغيير تويتش البوت إلى  ${argresult}**`)
 }
  
