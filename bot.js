@@ -37,7 +37,7 @@ const queue = new Map();
  
  
  
-var prefix = "1" 
+var prefix = "b" 
 client.on('message', async msg => {
     if (msg.author.bot) return undefined;
    
@@ -57,10 +57,10 @@ client.on('message', async msg => {
         const permissions = voiceChannel.permissionsFor(msg.client.user);
         if (!permissions.has('CONNECT')) {
            
-            return msg.channel.send('لا يتوآجد لدي صلاحية للتكلم بهذآ الروم');
+            return msg.channel.send('**لا يتوآجد لدي صلاحية للتكلم بهذآ الروم**');
         }
         if (!permissions.has('SPEAK')) {
-            return msg.channel.send('لا يتوآجد لدي صلاحية للتكلم بهذآ الروم');
+            return msg.channel.send('**لا يتوآجد لدي صلاحية للتكلم بهذآ الروم**');
         }
  
         if (!permissions.has('EMBED_LINKS')) {
@@ -88,7 +88,7 @@ client.on('message', async msg => {
                     .setDescription(`**الرجآء من حضرتك إختيآر رقم المقطع** :
 ${videos.map(video2 => `[**${++index} **] \`${video2.title}\``).join('\n')}`)
  
-                    .setFooter("By iiFireKingYTii_#7310")
+                    .setFooter("By **احب البطاطس**")
                     msg.channel.sendEmbed(embed1).then(message =>{message.delete(20000)})
                    
                     // eslint-disable-next-line max-depth
@@ -229,26 +229,26 @@ function play(guild, song) {
     serverQueue.textChannel.send(`بدء تشغيل : **${song.title}**`);
 }
  
-const adminprefix = "1";
+const adminprefix = "b";
 const devs = ['474354424391663616'];
 client.on('message', message => {
   var argresult = message.content.split(` `).slice(1).join(' ');
     if (!devs.includes(message.author.id)) return;
    
-if (message.content.startsWith(adminprefix + 'setgdame')) {
+if (message.content.startsWith(adminprefix + 'حالة')) {
   client.user.setGame(argresult);
     message.channel.sendMessage(`**${argresult} تم تغيير بلاينق البوت إلى **`)
 } else
-  if (message.content.startsWith(adminprefix + 'setname')) {
+  if (message.content.startsWith(adminprefix + 'اسم')) {
 client.user.setUsername(argresult).then
     message.channel.sendMessage(`**${argresult}** : تم تغيير أسم البوت إلى`)
 return message.reply("**لا يمكنك تغيير الاسم يجب عليك الانتظآر لمدة ساعتين . **");
 } else
-  if (message.content.startsWith(adminprefix + 'setavatar')) {
+  if (message.content.startsWith(adminprefix + 'صورة')) {
 client.user.setAvatar(argresult);
   message.channel.sendMessage(`**${argresult}** : تم تغير صورة البوت`);
       } else    
-if (message.content.startsWith(adminprefix + 'setT')) {
+if (message.content.startsWith(adminprefix + 'تويتش')) {
   client.user.setGame(argresult, "https://www.twitch.tv/idk");
     message.channel.sendMessage(`**تم تغيير تويتش البوت إلى  ${argresult}**`)
 }
@@ -257,16 +257,16 @@ if (message.content.startsWith(adminprefix + 'setT')) {
 client.on("message", message => {
     if (message.content === `${prefix}help`) {
   const embed = new Discord.RichEmbed()
-      .setColor("#000000")
+      .setColor("#99999")
       .setDescription(`
-${prefix}play ⇏ لتشغيل أغنية برآبط أو بأسم
-${prefix}skip ⇏ لتجآوز الأغنية الحآلية
-${prefix}stop ⇏ إيقآف الأغنية مؤقتا
-${prefix}resume ⇏ لموآصلة الإغنية بعد إيقآفهآ مؤقتا
-${prefix}vol ⇏ لتغيير درجة الصوت 100 - 0
-${prefix}leave⇏ لإخرآج البوت من الروم
-${prefix}np ⇏ لمعرفة الأغنية المشغلة حآليا
-${prefix}queue ⇏ لمعرفة قآئمة التشغيل
+${prefix}play ⇏ **لتشغيل أغنية برآبط أو بأسم**
+${prefix}skip ⇏ **لتجآوز الأغنية الحآلية**
+${prefix}stop ⇏ **إيقآف الأغنية مؤقتا**
+${prefix}resume ⇏ **لموآصلة الإغنية بعد إيقآفهآ مؤقتا**
+${prefix}vol ⇏ **لتغيير درجة الصوت 100 - 0**
+${prefix}leave⇏ **لإخرآج البوت من الروم**
+${prefix}np ⇏ **لمعرفة الأغنية المشغلة حآليا**
+${prefix}queue ⇏ **لمعرفة قآئمة التشغيل**
  `)
    message.channel.sendEmbed(embed)
    
