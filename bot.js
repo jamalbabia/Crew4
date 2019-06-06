@@ -76,7 +76,6 @@ client.on('message', async msg => {
                 await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
             }
             return msg.channel.send(` **${playlist.title}** 📝 ** || اغنية جديدة في قائمة التشغيل**`);
-                                     .addField(`✨** بواسطة **:`, '**'+[message.author.username]+'**')
             } else {
             try {
  
