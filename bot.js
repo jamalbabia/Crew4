@@ -3,7 +3,7 @@ const client = new Discord.Client();
  
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-   client.user.setActivity("bhelp | بطاطس",{type: 'WATCHING'})
+   client.user.setActivity("bhelp | بطاطا 🥔😁",{type: 'WATCHING'})
   console.log('')
   console.log('')
   console.log('╔[═════════════════════════════════════════════════════════════════]╗')
@@ -52,228 +52,101 @@ client.on('message', async msg => {
     command = command.slice(prefix.length)
  
     if (command === `play`) {
-			if (args.length == 0 && queue.length > 0) {
-				if (!message.member.voiceChannel) {
-					message.reply("Erorr 😭 ");
-					message.channel.send({embed: {
-                    color: 3447003,
-                    description: ":no_entry: || **__يجب ان تكون في روم صوتي__**"
-                    }});
-				} else {
-					isPlaying = true;
-					playMusic(queue[0], message);
-					message.channel.send({embed: {
-                    color: 3447003,
-                    description: "**تم بدء تشغيل الاغنية.  : **" + songsQueue[0],
-                    }});
-				}
-			} else if (args.length == 0 && queue.length == 0) {
-				message.reply("قائمة التشغيل فارغة الآن , .play [ واسم الاغنية ] or .yt [ ومصطلح البحث ] || لتشغيل والبحث عن الاغاني");
-			} else if (queue.length > 0 || isPlaying) {
-				getID(args).then(id => {
-					if (id) {
-						queue.push(id);
-						getYouTubeResultsId(args, 1).then(ytResults => {
-                             message.reply(" ");
-                             const embed = new Discord.RichEmbed()
-                             .setColor("36393f")
-                             .addField('📝 ** || اغنية جديدة في قائمة التشغيل**', '**'+[ytResults]+'**')
-                             .addField(`✨** بواسطة **:`, '**'+[message.author.username]+'**')
-                             .setTimestamp()
-                             .setFooter(bot.user.username+" ||", bot.user.avatarURL)
-                             .addField('**``اقتراحنا لك.``👍👌**' , "**"+sugg[Math.floor(Math.random() * sugg.length)]+"**", true)
-                             .addField('**``سرعة استجابة البوت``🍃**', "``"+[Date.now() - message.createdTimestamp]+'``Ms📶', true)
-                             .setThumbnail(`http://simpleicon.com/wp-content/uploads/playlist.png`)
-                              message.channel.send({embed});
-							songsQueue.push(ytResults[0]);
-						}).catch(error => console.log(error));
-					} else {
-						message.reply(" ");
-						message.channel.send({embed: {
-						color: 3447003,
-						description: "🐸 || **__اسف لا يمكن العثور علي الاغنية__**"
-						}});
-
-					}
-				}).catch(error => console.log(error));
-			} else {
-				isPlaying = true;
-				getID(args).then(id => {
-					if (id) {
-						queue.push(id);
-						playMusic(id, message);
-						getYouTubeResultsId(args, 1).then(ytResults => {
-                             message.reply(" ");
-                             const embed = new Discord.RichEmbed()
-                             .setColor("36393f")
-                             .addField('** ☑ || تم تشغيل** ', '**'+[ytResults]+'**')
-                             .addField(`✨** بواسطة **:`, '**'+[message.author.username]+'**')
-                             .setTimestamp()
-                             .setFooter(bot.user.username+" ||", bot.user.avatarURL)
-                             .addField('**``اقتراحنا لك.``👍👌**' , "**"+sugg[Math.floor(Math.random() * sugg.length)]+"**", true)
-                             .addField('**``سرعة استجابة البوت``🍃**', "``"+[Date.now() - message.createdTimestamp]+'``Ms📶', true)
-                             .setThumbnail(`http://i.ytimg.com/vi/${queue}/hqdefault.jpg`)
-                              message.channel.send({embed});
-
-                  songsQueue.push(ytResults[0]);
-						}).catch(error => console.log(error));
-					} else {
-						message.reply(" ");
-						message.channel.send({embed: {
-						color: 3447003,
-						description: "🐸 || **__اسف لا يمكن العثور علي الاغنية__**"
-						}});
-
-					}
-				}).catch(error => console.log(error));
-			}
-			break;
-
-
+        const voiceChannel = msg.member.voiceChannel;
+        if (!voiceChannel) return msg.channel.send(':no_entry: || **__يجب ان تكون في روم صوتي__** .');
+        const permissions = voiceChannel.permissionsFor(msg.client.user);
+        if (!permissions.has('CONNECT')) {
+           
+            return msg.channel.send('**🛑لا يتوآجد لدي صلاحية للتكلم بهذآ الروم**');
+        }
+        if (!permissions.has('SPEAK')) {
+            return msg.channel.send('**🚫لا يتوآجد لدي صلاحية للتكلم بهذآ الروم**');
+        }
+ 
+        if (!permissions.has('EMBED_LINKS')) {
+            return msg.channel.sendMessage("**❌يجب توآفر برمشن `EMBED LINKS`لدي **")
+        }
+ 
+        if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
+            const playlist = await youtube.getPlaylist(url);
+            const videos = await playlist.getVideos();
+           
+            for (const video of Object.values(videos)) {
+                const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
+                await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
+            }
+            return msg.channel.send(` **${playlist.title}** 📝 ** || اغنية جديدة في قائمة التشغيل**`);
+                                     .addField(`✨** بواسطة **:`, '**'+[message.author.username]+'**')
+            } else {
+            try {
+ 
+                var video = await youtube.getVideo(url);
+            } catch (error) {
+                try {
+                    var videos = await youtube.searchVideos(searchString, 5);
+                    let index = 0;
+                    const embed1 = new Discord.RichEmbed()
+                    .setDescription(`**🍃 || الرجآء من حضرتك إختيآر رقم المقطع** :
+${videos.map(video2 => `[**${++index} **] \`${video2.title}\``).join('\n')}`)
+ 
+                    .setFooter("By **🥔😂احب البطاطس**")
+                    msg.channel.sendEmbed(embed1).then(message =>{message.delete(20000)})
+                   
+                    // eslint-disable-next-line max-depth
+                    try {
+                        var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
+                            maxMatches: 1,
+                            time: 15000,
+                            errors: ['time']
+                        });
+                    } catch (err) {
+                        console.error(err);
+                        return msg.channel.send('🐸** || لم يتم إختيآر مقطع صوتي**');
+                    }
+                    const videoIndex = parseInt(response.first().content);
+                    var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
+                } catch (err) {
+                    console.error(err);
+                    return msg.channel.send(':_: لا يتوفر نتآئج بحث ');
+                }
+            }
+ 
+            return handleVideo(video, msg, voiceChannel);
+        }
     } else if (command === `skip`) {
-			console.log(queue);
-			if (queue.length === 1) {
-				message.reply(" ");
-				message.channel.send({embed: {
-				color: 3447003,
-				description: " ⁉ || **__قائمة التشغيل فارغة الان , اكتب .play [اسم الاغنية] او .yt [اسم الاغنية]__**"
-				}});
-				dispatcher.end();
-			} else {
-				if (skippers.indexOf(message.author.id) === -1) {
-					skippers.push(message.author.id);
-					skipRequest++;
-
-					if (skipRequest >= Math.ceil((voiceChannel.members.size - 1) / 2)) {
-						skipSong(message);
-                             message.reply(" ");
-                             const embed = new Discord.RichEmbed()
-                          .setColor("36393f")
-                         .addField('** ⏯ || الاغنية الحالية ** ', '**'+[songsQueue]+'**')
-                       .addField(`✨** تم التخطي بواسطة **:`, '**'+[message.author.username]+'**')
-                      .setTimestamp()
-                     .setFooter(bot.user.username+" ||", bot.user.avatarURL)
-                     .addField('**``لضبط الصوت.``👍👌**' , "**"+".vol [ 0 - 200 ] لضبط اعدادات الصوت"+"**", true)
-                     .addField('**``سرعة استجابة البوت``🍃**', "``"+[Date.now() - message.createdTimestamp]+'``Ms📶', true)
-                     .setThumbnail(`http://i.ytimg.com/vi/${queue}/hqdefault.jpg`)
-                              message.channel.send({embed});
-					} else {
-						message.reply(` `);
-						message.channel.send({embed: {
-				color: 3447003,
-				description: " #⃣ || ** لقد تم اضاف تصويتك ,  تحتاج الـ"+"__"+[Math.ceil((voiceChannel.members.size - 1) / 2) - skipRequest]+"__"+"اكتر من تصويت , لتخطي الاغنية الحالية**"
-				}});
-					}
-				} else {
-						message.reply(` `);
-						message.channel.send({embed: {
-				color: 3447003,
-				description: " 😒 || **__لقد قمت بالتوصيت بالفعل__**"
-				}});
-				}
-			}
-			break;
-
+        if (!msg.member.voiceChannel) return msg.channel.send('🛑**أنت لست بروم صوتي .**');
+        if (!serverQueue) return msg.channel.send('**لا يتوفر مقطع لتجآوزه**');
+        serverQueue.connection.dispatcher.end('☑ || **‼تم تجآوز هذآ المقطع**');
+        return undefined;
     } else if (command === `leave`) {
-        if (!msg.member.voiceChannel) return msg.channel.send('أنت لست بروم صوتي .');
-        if (!serverQueue) return msg.channel.send('لا يتوفر مقطع لإيقآفه');
+        if (!msg.member.voiceChannel) return msg.channel.send('🛑**أنت لست بروم صوتي .**');
+        if (!serverQueue) return msg.channel.send('**‼لا يتوفر مقطع لإيقآفه**');
         serverQueue.songs = [];
-        serverQueue.connection.dispatcher.end('تم إيقآف هذآ المقطع');
+        serverQueue.connection.dispatcher.end('**❗تم إيقآف هذآ المقطع**');
         return undefined;
     } else if (command === `vol`) {
-        if (!msg.member.voiceChannel) return msg.channel.send('أنت لست بروم صوتي .');
+        if (!msg.member.voiceChannel) return msg.channel.send('❓أنت لست بروم صوتي .');
         if (!serverQueue) return msg.channel.send('لا يوجد شيء شغآل.');
         if (!args[1]) return msg.channel.send(`:loud_sound: مستوى الصوت **${serverQueue.volume}**`);
         serverQueue.volume = args[1];
         serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 50);
         return msg.channel.send(`:speaker: تم تغير الصوت الي **${args[1]}**`);
     } else if (command === `np`) {
-        if (!serverQueue) return msg.channel.send('لا يوجد شيء حالي ف العمل.');
+        if (!serverQueue) return msg.channel.send('❓لا يوجد شيء حالي ف العمل.');
         const embedNP = new Discord.RichEmbed()
     .setDescription(`:notes: الان يتم تشغيل : **${serverQueue.songs[0].title}**`)
         return msg.channel.sendEmbed(embedNP);
-    } else if (command === `playlist`) {
+    } else if (command === `queue`) {
        
-			if (queue.length === 0) { // اذا لم تكن هناك اغاني في قائمة التشغيل , ف يبعت رسالة ان قائمة الشتغيل
-						message.reply(` `);
-						message.channel.send({embed: {
-				color: 3447003,
-				description: " 😒 || **__قائمة التشغيل فارغة , ``اكتب : .play | .yt`` للبحث علي الاغاني__**"
-				}});
-			} else if (args.length > 0 && args[0] == 'remove') {
-				        let jamal = message.guild.member(message.author).roles.find('name', 'Dj');
-				if (args.length == 2 && args[1] <= queue.length) {
-
-						message.reply(` `);
-                             const embed = new Discord.RichEmbed()
-                          .setColor("36393f")
-                         .addField('** 🗑 ||: تمت ازالتة من قائمة التشغيل : ** ',''+songsQueue[args[1] - 1]+'')
-                       .addField(`✨** تمت الازالة بواسطة : **:`, '**'+[message.author.username]+'**')
-                      .setTimestamp()
-                     .setFooter(bot.user.username+" ||", bot.user.avatarURL)
-                     message.channel.send({embed});
-					queue.splice(args[1] - 1, 1);
-					songsQueue.splice(args[1] - 1, 1);
-				} else {
-					message.reply(` `);
-					message.channel.send({embed: {
-					color: 3447003,
-					description: ` 📝 || **__يجب وضع رقم الاغنية فـ قائمة التشغيل.__**`
-				}});
-				}
-			} else if (args.length > 0 && args[0] == 'clear') {
-				        let jamal = message.guild.member(message.author).roles.find('name', 'Dj');
-				if (args.length == 1) {
-
-						message.reply(` `);
-                             const embed = new Discord.RichEmbed()
-                          .setColor("36393f")
-                         .setDescription('**تمت ازالة جميع الموسيقي الموجوده فـ قائمة الشتغيل , استمتع 😉**')
-                      .setTimestamp()
-                     .setFooter(bot.user.username+" ||", bot.user.avatarURL)
-                     message.channel.send({embed});
-					queue.splice(1);
-					songsQueue.splice(1);
-				} else {
-						message.reply(` `);
-                             const embed = new Discord.RichEmbed()
-                          .setColor("36393f")
-                         .setDescription('**انتا تحتاج الي كتابة .playlist clear دون اتباع الحجج**')
-                      .setTimestamp()
-                     .setFooter(bot.user.username+" ||", bot.user.avatarURL)
-                     message.channel.send({embed});
-				}
-			} else if (args.length > 0 && args[0] == 'shuffle') {
-				        let jamal = message.guild.member(message.author).roles.find('name', 'Dj');
-				let tempA = [songsQueue[0]];
-				let tempB = songsQueue.slice(1);
-				songsQueue = tempA.concat(shuffle(tempB));
-						message.reply(` `);
-                             const embed = new Discord.RichEmbed()
-                          .setColor("36393f")
-                         .setDescription('**تـم تبديل قائمة التشغيل اكتب .playlist لمشاهدة قائمة الشتغيل الجديده**')
-                      .setTimestamp()
-                     .setFooter(bot.user.username+" ||", bot.user.avatarURL)
-                     message.channel.send({embed});
-			} else {// لو فـ اغاني ف قائمة التشغيل , ف الصف ده خاص بيها
-				let format = "```"
-				for (const songName in songsQueue) {
-					if (songsQueue.hasOwnProperty(songName)) {
-						let temp = `${parseInt(songName) + 1}: ${songsQueue[songName]} ${songName == 0 ? "**(PlayingNow - تعمل الان.)**" : ""}\n`;
-						if ((format + temp).length <= 2000 - 3) {
-							format += temp;
-						} else {
-							format += "```";
-							message.channel.send(format);
-							format = "```";
-						}
-					}
-				}
-				format += "```";
-				message.channel.send(format);
-			}
-			break;
-
+        if (!serverQueue) return msg.channel.send('لا يوجد شيء حالي ف العمل.');
+        let index = 0;
+       
+        const embedqu = new Discord.RichEmbed()
+ 
+.setDescription(`**Songs Queue**
+${serverQueue.songs.map(song => `**${++index} -** ${song.title}`).join('\n')}
+**الان يتم تشغيل** ${serverQueue.songs[0].title}`)
+        return msg.channel.sendEmbed(embedqu);
     } else if (command === `stop`) {
         if (serverQueue && serverQueue.playing) {
             serverQueue.playing = false;
@@ -387,14 +260,14 @@ client.on("message", message => {
   const embed = new Discord.RichEmbed()
       .setColor("#99999")
       .setDescription(`
-${prefix}play ⇏ **لتشغيل أغنية برآبط أو بأسم**
-${prefix}skip ⇏ **لتجآوز الأغنية الحآلية**
-${prefix}stop ⇏ **إيقآف الأغنية مؤقتا**
-${prefix}resume ⇏ **لموآصلة الإغنية بعد إيقآفهآ مؤقتا**
-${prefix}vol ⇏ **لتغيير درجة الصوت 100 - 0**
-${prefix}leave⇏ **لإخرآج البوت من الروم**
-${prefix}np ⇏ **لمعرفة الأغنية المشغلة حآليا**
-${prefix}queue ⇏ **لمعرفة قآئمة التشغيل**
+${prefix}play ⇏ **🎹لتشغيل أغنية برآبط أو بأسم**
+${prefix}skip ⇏ **⏭لتجآوز الأغنية الحآلية**
+${prefix}stop ⇏ **⏸إيقآف الأغنية مؤقتا**
+${prefix}resume ⇏ **▶لموآصلة الإغنية بعد إيقآفهآ مؤقتا**
+${prefix}vol ⇏ **:loud_sound:لتغيير درجة الصوت 100 - 0**
+${prefix}leave⇏ **:robot: لإخرآج البوت من الروم**
+${prefix}np ⇏ **🎵لمعرفة الأغنية المشغلة حآليا**
+${prefix}queue ⇏ **🎶لمعرفة قآئمة التشغيل**
  `)
    message.channel.sendEmbed(embed)
    
