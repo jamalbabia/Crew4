@@ -53,30 +53,30 @@ client.on('message', async msg => {
  
     if (command === `play`) {
 			if (args.length == 0 && queue.length > 0) {
-				if (!message.member.voiceChannel) {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				if (!message.member.voiceChannel) {
 					message.reply("Erorr 😭 ");
-					message.channel.send({embed: {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					message.channel.send({embed: {
                     color: 3447003,
                     description: ":no_entry: || **__يجب ان تكون في روم صوتي__**"
                     }});
-				} else {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				} else {
 					isPlaying = true;
 					playMusic(queue[0], message);
-					message.channel.send({embed: {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					message.channel.send({embed: {
                     color: 3447003,
                     description: "**تم بدء تشغيل الاغنية.  : **" + songsQueue[0],
-                    }});// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                    }});
 				}
 			} else if (args.length == 0 && queue.length == 0) {
 				message.reply("قائمة التشغيل فارغة الآن , .play [ واسم الاغنية ] or .yt [ ومصطلح البحث ] || لتشغيل والبحث عن الاغاني");
 			} else if (queue.length > 0 || isPlaying) {
 				getID(args).then(id => {
-					if (id) {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					if (id) {
 						queue.push(id);
 						getYouTubeResultsId(args, 1).then(ytResults => {
                              message.reply(" ");
                              const embed = new Discord.RichEmbed()
-                             .setColor("36393f")// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                             .setColor("36393f")
                              .addField('📝 ** || اغنية جديدة في قائمة التشغيل**', '**'+[ytResults]+'**')
                              .addField(`✨** بواسطة **:`, '**'+[message.author.username]+'**')
                              .setTimestamp()
@@ -85,59 +85,59 @@ client.on('message', async msg => {
                              .addField('**``سرعة استجابة البوت``🍃**', "``"+[Date.now() - message.createdTimestamp]+'``Ms📶', true)
                              .setThumbnail(`http://simpleicon.com/wp-content/uploads/playlist.png`)
                               message.channel.send({embed});
-							songsQueue.push(ytResults[0]);// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+							songsQueue.push(ytResults[0]);
 						}).catch(error => console.log(error));
 					} else {
-						message.reply(" ");// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+						message.reply(" ");
 						message.channel.send({embed: {
 						color: 3447003,
 						description: "🐸 || **__اسف لا يمكن العثور علي الاغنية__**"
-						}});// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+						}});
 
-					}// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					}
 				}).catch(error => console.log(error));
 			} else {
-				isPlaying = true;// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				isPlaying = true;
 				getID(args).then(id => {
-					if (id) {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					if (id) {
 						queue.push(id);
-						playMusic(id, message);// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+						playMusic(id, message);
 						getYouTubeResultsId(args, 1).then(ytResults => {
                              message.reply(" ");
                              const embed = new Discord.RichEmbed()
                              .setColor("36393f")
                              .addField('** ☑ || تم تشغيل** ', '**'+[ytResults]+'**')
                              .addField(`✨** بواسطة **:`, '**'+[message.author.username]+'**')
-                             .setTimestamp()// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                             .setTimestamp()
                              .setFooter(bot.user.username+" ||", bot.user.avatarURL)
                              .addField('**``اقتراحنا لك.``👍👌**' , "**"+sugg[Math.floor(Math.random() * sugg.length)]+"**", true)
                              .addField('**``سرعة استجابة البوت``🍃**', "``"+[Date.now() - message.createdTimestamp]+'``Ms📶', true)
                              .setThumbnail(`http://i.ytimg.com/vi/${queue}/hqdefault.jpg`)
-                              message.channel.send({embed});// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                              message.channel.send({embed});
 
                   songsQueue.push(ytResults[0]);
 						}).catch(error => console.log(error));
-					} else {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
-						message.reply(" ");// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					} else {
+						message.reply(" ");
 						message.channel.send({embed: {
 						color: 3447003,
 						description: "🐸 || **__اسف لا يمكن العثور علي الاغنية__**"
 						}});
 
-					}// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					}
 				}).catch(error => console.log(error));
-			}// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+			}
 			break;
 
 
     } else if (command === `skip`) {
 			console.log(queue);
-			if (queue.length === 1) {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+			if (queue.length === 1) {
 				message.reply(" ");
 				message.channel.send({embed: {
-				color: 3447003,// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				color: 3447003,
 				description: " ⁉ || **__قائمة التشغيل فارغة الان , اكتب .play [اسم الاغنية] او .yt [اسم الاغنية]__**"
-				}});// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				}});
 				dispatcher.end();
 			} else {
 				if (skippers.indexOf(message.author.id) === -1) {
@@ -146,25 +146,25 @@ client.on('message', async msg => {
 
 					if (skipRequest >= Math.ceil((voiceChannel.members.size - 1) / 2)) {
 						skipSong(message);
-                             message.reply(" ");// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                             message.reply(" ");
                              const embed = new Discord.RichEmbed()
-                          .setColor("36393f")// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                          .setColor("36393f")
                          .addField('** ⏯ || الاغنية الحالية ** ', '**'+[songsQueue]+'**')
                        .addField(`✨** تم التخطي بواسطة **:`, '**'+[message.author.username]+'**')
-                      .setTimestamp()// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                      .setTimestamp()
                      .setFooter(bot.user.username+" ||", bot.user.avatarURL)
                      .addField('**``لضبط الصوت.``👍👌**' , "**"+".vol [ 0 - 200 ] لضبط اعدادات الصوت"+"**", true)
                      .addField('**``سرعة استجابة البوت``🍃**', "``"+[Date.now() - message.createdTimestamp]+'``Ms📶', true)
                      .setThumbnail(`http://i.ytimg.com/vi/${queue}/hqdefault.jpg`)
                               message.channel.send({embed});
-					} else {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					} else {
 						message.reply(` `);
 						message.channel.send({embed: {
-				color: 3447003,// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				color: 3447003,
 				description: " #⃣ || ** لقد تم اضاف تصويتك ,  تحتاج الـ"+"__"+[Math.ceil((voiceChannel.members.size - 1) / 2) - skipRequest]+"__"+"اكتر من تصويت , لتخطي الاغنية الحالية**"
 				}});
 					}
-				} else {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				} else {
 						message.reply(` `);
 						message.channel.send({embed: {
 				color: 3447003,
@@ -172,7 +172,7 @@ client.on('message', async msg => {
 				}});
 				}
 			}
-			break;// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+			break;
 
     } else if (command === `leave`) {
         if (!msg.member.voiceChannel) return msg.channel.send('أنت لست بروم صوتي .');
@@ -214,49 +214,49 @@ client.on('message', async msg => {
                      message.channel.send({embed});
 					queue.splice(args[1] - 1, 1);
 					songsQueue.splice(args[1] - 1, 1);
-				} else {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				} else {
 					message.reply(` `);
 					message.channel.send({embed: {
 					color: 3447003,
 					description: ` 📝 || **__يجب وضع رقم الاغنية فـ قائمة التشغيل.__**`
-				}});// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				}});
 				}
 			} else if (args.length > 0 && args[0] == 'clear') {
 				        let jamal = message.guild.member(message.author).roles.find('name', 'Dj');
 				if (args.length == 1) {
-// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+
 						message.reply(` `);
                              const embed = new Discord.RichEmbed()
                           .setColor("36393f")
                          .setDescription('**تمت ازالة جميع الموسيقي الموجوده فـ قائمة الشتغيل , استمتع 😉**')
-                      .setTimestamp()// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                      .setTimestamp()
                      .setFooter(bot.user.username+" ||", bot.user.avatarURL)
                      message.channel.send({embed});
-					queue.splice(1);// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+					queue.splice(1);
 					songsQueue.splice(1);
-				} else {// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				} else {
 						message.reply(` `);
                              const embed = new Discord.RichEmbed()
                           .setColor("36393f")
                          .setDescription('**انتا تحتاج الي كتابة .playlist clear دون اتباع الحجج**')
-                      .setTimestamp()// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                      .setTimestamp()
                      .setFooter(bot.user.username+" ||", bot.user.avatarURL)
                      message.channel.send({embed});
-				}// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				}
 			} else if (args.length > 0 && args[0] == 'shuffle') {
 				        let jamal = message.guild.member(message.author).roles.find('name', 'Dj');
 				let tempA = [songsQueue[0]];
-				let tempB = songsQueue.slice(1);// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				let tempB = songsQueue.slice(1);
 				songsQueue = tempA.concat(shuffle(tempB));
-						message.reply(` `);// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+						message.reply(` `);
                              const embed = new Discord.RichEmbed()
-                          .setColor("36393f")// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                          .setColor("36393f")
                          .setDescription('**تـم تبديل قائمة التشغيل اكتب .playlist لمشاهدة قائمة الشتغيل الجديده**')
                       .setTimestamp()
-                     .setFooter(bot.user.username+" ||", bot.user.avatarURL)// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+                     .setFooter(bot.user.username+" ||", bot.user.avatarURL)
                      message.channel.send({embed});
 			} else {// لو فـ اغاني ف قائمة التشغيل , ف الصف ده خاص بيها
-				let format = "```"// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				let format = "```"
 				for (const songName in songsQueue) {
 					if (songsQueue.hasOwnProperty(songName)) {
 						let temp = `${parseInt(songName) + 1}: ${songsQueue[songName]} ${songName == 0 ? "**(PlayingNow - تعمل الان.)**" : ""}\n`;
@@ -266,11 +266,11 @@ client.on('message', async msg => {
 							format += "```";
 							message.channel.send(format);
 							format = "```";
-						}// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+						}
 					}
 				}
 				format += "```";
-				message.channel.send(format);// By : jamal. || تم انشاء هذا البوت من طرف بطاطس
+				message.channel.send(format);
 			}
 			break;
 
